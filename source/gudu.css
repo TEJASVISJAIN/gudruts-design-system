@@ -1,0 +1,872 @@
+/* Gudu, the mascot (src/components/ui/Gudu.tsx). Size it with width on .gudu. */
+.gudu {
+  display: inline-block;
+  aspect-ratio: 236 / 228;
+  line-height: 0;
+}
+/* span.gudu > svg outranks generic "svg" rules in containers (e.g. .search-modal svg). */
+span.gudu > svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: none;
+}
+
+/* Die-cut sticker edge: plum offset shadow under a cream border. */
+.gudu-shadow {
+  fill: var(--color-plum);
+  stroke: var(--color-plum);
+}
+.gudu-border {
+  fill: var(--color-cream);
+  stroke: var(--color-cream);
+}
+
+.gudu-skin {
+  fill: var(--color-pink);
+}
+.gudu-outline {
+  fill: none;
+  stroke: var(--color-plum);
+  stroke-width: 4.5;
+  stroke-linejoin: round;
+}
+.gudu-halftone {
+  fill: #a8415f; /* pink in shadow */
+}
+.gudu-ink {
+  fill: none;
+  stroke: var(--color-plum);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.gudu-bobble {
+  fill: var(--color-yellow);
+  stroke: var(--color-plum);
+  stroke-width: 3;
+}
+.gudu-leaf {
+  fill: var(--color-olive);
+  stroke: var(--color-plum);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+}
+.gudu-leaf-vein {
+  fill: none;
+  stroke: #7d9450; /* olive, lifted */
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.gudu-limb {
+  fill: var(--color-pink);
+  stroke: var(--color-plum);
+  stroke-width: 4;
+}
+.gudu-foot {
+  fill: #a8415f;
+  stroke: var(--color-plum);
+  stroke-width: 4;
+}
+.gudu-pupil {
+  fill: var(--color-plum);
+}
+.gudu-glint {
+  fill: #fff;
+}
+.gudu-cheek {
+  fill: #f09ab2;
+}
+.gudu-mouth {
+  fill: var(--color-plum);
+  stroke: var(--color-plum);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.gudu-tongue {
+  fill: #f09ab2;
+}
+.gudu-sparkles {
+  fill: var(--color-yellow);
+  stroke: var(--color-plum);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.gudu-sparkles path {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gudu-twinkle 1.8s ease-in-out infinite;
+}
+.gudu-sparkles path:nth-child(2) {
+  animation-delay: -0.6s;
+}
+.gudu-sparkles path:nth-child(3) {
+  animation-delay: -1.2s;
+}
+
+/* Motion */
+.gudu-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gudu-blink 4.6s infinite;
+}
+.gudu-body {
+  transform-box: view-box;
+  transform-origin: 80px 196px;
+  animation: gudu-idle 3.6s infinite;
+}
+/*
+ * Celebrate: a playful 1.5s hop loop, built on the SVGator motion-craft rules —
+ * anticipation crouch → stretched launch → hang → stretched fall → squash → springy
+ * settle → a still beat before it repeats. The body pivots from its feet so it flattens
+ * against the floor. Secondary layers trail it: the leaf + tuft (~100ms, follow-through),
+ * the arms (~60ms), and a ground shadow that shrinks as Gudu rises (counter-motion).
+ * All parts share one duration so the loop seam stays invisible.
+ */
+.gudu--celebrate {
+  --hop: 1.5s;
+}
+.gudu--celebrate .gudu-body {
+  animation: gudu-hop var(--hop) infinite;
+}
+.gudu-crown,
+.gudu-arm-left,
+.gudu-arm-right,
+.gudu-ground {
+  transform-box: view-box;
+}
+.gudu-crown {
+  transform-origin: 84px 46px; /* where the leaf and tuft meet the head */
+}
+.gudu-arm-left {
+  transform-origin: 30px 122px;
+}
+.gudu-arm-right {
+  transform-origin: 130px 122px;
+}
+.gudu--celebrate .gudu-crown {
+  animation: gudu-crown-trail var(--hop) infinite;
+  animation-delay: 0.1s;
+}
+.gudu--celebrate .gudu-arm-left {
+  animation: gudu-arm-fling var(--hop) infinite;
+  animation-delay: 0.06s;
+}
+.gudu--celebrate .gudu-arm-right {
+  animation: gudu-arm-fling-right var(--hop) infinite;
+  animation-delay: 0.08s;
+}
+.gudu-ground {
+  fill: var(--color-plum);
+  opacity: 0.18;
+  transform-origin: 86px 203px;
+  animation: gudu-ground var(--hop) infinite;
+}
+.gudu-arm-wave {
+  transform-box: view-box;
+  transform-origin: 133px 120px;
+  animation: gudu-wave 9s ease-in-out infinite;
+}
+
+/* Peek: sits low in a villi row with only its tuft, leaf and eyes showing,
+   rises every few seconds to wave, and pops up on hover. */
+.gudu--peek svg {
+  transform: translateY(45%);
+  animation: gudu-peek 9s ease-in-out infinite;
+}
+.gudu--peek:hover svg {
+  animation: gudu-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.gudu--peek:hover .gudu-arm-wave {
+  animation: gudu-wave 1.6s ease-in-out infinite;
+}
+/* Show a peek pose fully risen, e.g. on the style guide. */
+.gudu--standing.gudu--peek svg {
+  transform: none;
+  animation: none;
+}
+
+/* Each keyframe's timing function eases the segment that follows it. */
+@keyframes gudu-hop {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  12% {
+    /* anticipation: crouch */
+    transform: translate(0, 0) scale(1.12, 0.86);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  22% {
+    /* launch: stretch upward */
+    transform: translate(0, -11px) scale(0.9, 1.12);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  40% {
+    /* apex */
+    transform: translate(0, -40px) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  48% {
+    /* hang, then gather into the fall */
+    transform: translate(0, -37px) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  60% {
+    /* touch-down: stretched by the fall */
+    transform: translate(0, 0) scale(0.94, 1.06);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  66% {
+    /* impact: squash */
+    transform: translate(0, 0) scale(1.14, 0.86);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+  80%,
+  100% {
+    /* springy settle, then a still beat */
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+@keyframes gudu-crown-trail {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  14% {
+    transform: rotate(-6deg);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  28% {
+    transform: rotate(14deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  46% {
+    transform: rotate(-8deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  66% {
+    transform: rotate(12deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+  80% {
+    transform: rotate(-4deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  90% {
+    transform: rotate(0);
+  }
+}
+@keyframes gudu-arm-fling {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  12% {
+    transform: rotate(14deg);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  26% {
+    transform: rotate(-16deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  48% {
+    transform: rotate(-4deg);
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  66% {
+    transform: rotate(10deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+  82% {
+    transform: rotate(0);
+  }
+}
+/* Mirror image of the left arm. */
+@keyframes gudu-arm-fling-right {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  12% {
+    transform: rotate(-14deg);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  26% {
+    transform: rotate(16deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  48% {
+    transform: rotate(4deg);
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  66% {
+    transform: rotate(-10deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+  82% {
+    transform: rotate(0);
+  }
+}
+@keyframes gudu-ground {
+  0%,
+  80%,
+  100% {
+    transform: scale(1);
+    opacity: 0.18;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  12% {
+    transform: scale(1.08, 1);
+    opacity: 0.22;
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  40%,
+  48% {
+    transform: scale(0.55);
+    opacity: 0.07;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  66% {
+    transform: scale(1.12, 1);
+    opacity: 0.24;
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+}
+@keyframes gudu-twinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0);
+  }
+  50% {
+    transform: scale(0.6) rotate(20deg);
+  }
+}
+@keyframes gudu-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes gudu-peek {
+  0%,
+  38%,
+  100% {
+    transform: translateY(45%);
+  }
+  46%,
+  84% {
+    transform: translateY(0);
+  }
+}
+@keyframes gudu-pop {
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes gudu-wave {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  55% {
+    transform: rotate(-24deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  61% {
+    transform: rotate(14deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  67% {
+    transform: rotate(-20deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  73% {
+    transform: rotate(10deg);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+  82% {
+    transform: rotate(0);
+  }
+}
+
+/*
+ * Per-pose motion. Same recipe as celebrate: a primary move on the body, the leaf + tuft
+ * trailing it (follow-through), and an ambient layer (blink, breath, twinkle). Loops start
+ * and end on the same pose so the seam is invisible.
+ */
+.gudu-crown {
+  animation: gudu-crown-idle 3.6s infinite;
+  animation-delay: -0.25s; /* trails the idle sway */
+}
+.gudu-arm-chin {
+  transform-box: view-box;
+  transform-origin: 130px 150px;
+}
+
+/* Peek: the crown whips as Gudu pops up and again as it sinks back. */
+.gudu--peek .gudu-crown {
+  animation: gudu-crown-peek 9s infinite;
+}
+
+/* Point: pull back, two quick jabs at the target, body leans in. */
+.gudu--point .gudu-body {
+  animation: gudu-point-lean 3s infinite;
+}
+.gudu--point .gudu-arm-right {
+  animation: gudu-point-jab 3s infinite;
+}
+.gudu--point .gudu-crown {
+  animation: gudu-crown-point 3s infinite;
+  animation-delay: 0.08s;
+}
+
+/* Think: slow head tilt, eyes wander, finger taps the chin. */
+.gudu--think .gudu-body {
+  animation: gudu-ponder 4s infinite;
+}
+.gudu--think .gudu-eyes > g {
+  animation: gudu-ponder-eyes 4s infinite;
+}
+.gudu--think .gudu-arm-chin {
+  animation: gudu-chin-tap 4s infinite;
+}
+
+/* Shrug: arms pop up with a small lift, then settle. */
+.gudu--shrug .gudu-body {
+  animation: gudu-shrug-body 2.6s infinite;
+}
+.gudu--shrug .gudu-arm-left {
+  animation: gudu-shrug-left 2.6s infinite;
+}
+.gudu--shrug .gudu-arm-right {
+  animation: gudu-shrug-right 2.6s infinite;
+}
+.gudu--shrug .gudu-crown {
+  animation: gudu-crown-shrug 2.6s infinite;
+  animation-delay: 0.1s;
+}
+
+/* Sad: a slow, heavy sigh; the leaf droops further on each breath. */
+.gudu--sad .gudu-body {
+  animation: gudu-sigh 4.4s infinite;
+}
+.gudu--sad .gudu-crown {
+  animation: gudu-crown-sad 4.4s infinite;
+  animation-delay: 0.2s;
+}
+
+/* Glow: a small happy bounce with wiggling arms; sparkles twinkle on their own. */
+.gudu--glow .gudu-body {
+  animation: gudu-bounce 1.3s infinite;
+}
+.gudu--glow .gudu-arm-left {
+  animation: gudu-wiggle-left 1.3s infinite;
+  animation-delay: 0.06s;
+}
+.gudu--glow .gudu-arm-right {
+  animation: gudu-wiggle-right 1.3s infinite;
+  animation-delay: 0.08s;
+}
+.gudu--glow .gudu-crown {
+  animation: gudu-crown-bounce 1.3s infinite;
+  animation-delay: 0.1s;
+}
+
+@keyframes gudu-idle {
+  0%,
+  50%,
+  100% {
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  0%,
+  100% {
+    transform: rotate(-2deg) scale(1, 1);
+  }
+  25%,
+  75% {
+    transform: rotate(0) scale(1.012, 0.985);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  50% {
+    transform: rotate(2deg) scale(1, 1);
+  }
+}
+@keyframes gudu-crown-idle {
+  0%,
+  100% {
+    transform: rotate(3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  50% {
+    transform: rotate(-3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-crown-peek {
+  0%,
+  38%,
+  58%,
+  84%,
+  97%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  44% {
+    transform: rotate(-12deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  50% {
+    transform: rotate(7deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+  90% {
+    transform: rotate(9deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+}
+@keyframes gudu-point-lean {
+  0%,
+  50%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  8% {
+    transform: rotate(-1.5deg);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  18%,
+  36% {
+    transform: rotate(3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-point-jab {
+  0%,
+  50%,
+  100% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  8% {
+    translate: -3px 2px; /* anticipation: pull back */
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+  16% {
+    translate: 6px -4px;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  24% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+  32% {
+    translate: 6px -4px;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-crown-point {
+  0%,
+  56%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  20% {
+    transform: rotate(-7deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  38% {
+    transform: rotate(5deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+}
+@keyframes gudu-ponder {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  50% {
+    transform: rotate(3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-ponder-eyes {
+  0%,
+  100% {
+    translate: -2px -1px;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  45% {
+    translate: 2.5px -2.5px;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  70% {
+    translate: 1px 0;
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-chin-tap {
+  0%,
+  62%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  66%,
+  74% {
+    transform: rotate(-7deg);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+  70%,
+  78% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+@keyframes gudu-shrug-body {
+  0%,
+  56%,
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  16% {
+    transform: translate(0, 0) scale(1.03, 0.96);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  32% {
+    transform: translate(0, -5px) scale(0.98, 1.03);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+}
+@keyframes gudu-shrug-left {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  18% {
+    transform: rotate(16deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  34% {
+    transform: rotate(20deg);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+}
+@keyframes gudu-shrug-right {
+  0%,
+  60%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  18% {
+    transform: rotate(-16deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  34% {
+    transform: rotate(-20deg);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+}
+@keyframes gudu-crown-shrug {
+  0%,
+  72%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  20% {
+    transform: rotate(-6deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  40% {
+    transform: rotate(8deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  58% {
+    transform: rotate(-3deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-sigh {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  40% {
+    transform: translate(0, -2px) scale(0.99, 1.02); /* breathe in */
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  70% {
+    transform: translate(0, 3px) scale(1.025, 0.955); /* heavy sigh out */
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-crown-sad {
+  0%,
+  100% {
+    transform: rotate(8deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  40% {
+    transform: rotate(4deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  72% {
+    transform: rotate(15deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-bounce {
+  0%,
+  86%,
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  18% {
+    transform: translate(0, 0) scale(1.06, 0.93);
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  44% {
+    transform: translate(0, -14px) scale(0.97, 1.04);
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+  68% {
+    transform: translate(0, 0) scale(1.05, 0.95);
+    animation-timing-function: cubic-bezier(0.34, 1.4, 0.2, 1);
+  }
+}
+@keyframes gudu-wiggle-left {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  25% {
+    transform: rotate(10deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  60% {
+    transform: rotate(-8deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-wiggle-right {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  25% {
+    transform: rotate(-10deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  60% {
+    transform: rotate(8deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+@keyframes gudu-crown-bounce {
+  0%,
+  100% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  30% {
+    transform: rotate(-6deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+  55% {
+    transform: rotate(8deg);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.2, 1);
+  }
+  80% {
+    transform: rotate(-2deg);
+    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gudu *,
+  .gudu svg {
+    animation: none !important;
+  }
+  /* Still visible, just not moving: stand up instead of hiding in the row. */
+  .gudu--peek svg {
+    transform: translateY(0);
+  }
+}
+
+/* Gudu + speech bubble (GuduSays). The bubble's tail points at Gudu. */
+.gudu-says {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.gudu-says > .gudu {
+  flex: none;
+  width: 84px;
+}
+.gudu-bubble {
+  position: relative;
+  margin: 0;
+  padding: 11px 15px;
+  border: 2px solid var(--color-plum);
+  border-radius: 18px;
+  background: var(--color-cream);
+  box-shadow: 4px 4px 0 var(--color-plum);
+  color: var(--color-plum);
+  font: 600 14px/1.35 var(--font-body);
+  text-wrap: pretty;
+}
+.gudu-bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-left: 2px solid var(--color-plum);
+  border-bottom: 2px solid var(--color-plum);
+  background: inherit;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* ---------- Occasion accessories (GuduAccessories.tsx) ---------- */
+.gudu-acc {
+  stroke: var(--color-plum);
+  stroke-width: 3.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.acc-scarf { fill: var(--color-orange); }
+.acc-scarf-knot { fill: #d1782b; }
+.acc-scarf-stripe { fill: none; stroke: var(--color-yellow); stroke-width: 4.5; }
+.acc-scarf-fringe { fill: none; stroke-width: 3; }
+.acc-hat { fill: #4b3651; }
+.acc-hat-band { fill: #2a1c2e; }
+.acc-buckle { fill: var(--color-yellow); fill-rule: evenodd; stroke-width: 2.5; }
+.acc-santa { fill: #d94a4a; }
+.acc-fur { fill: #fffdf6; }
+.acc-party { fill: var(--color-pink); }
+.acc-party-stripe { fill: none; stroke: var(--color-yellow); stroke-width: 5; }
+.acc-pompom { fill: var(--color-yellow); }
+.acc-party-rim { fill: var(--color-yellow); }

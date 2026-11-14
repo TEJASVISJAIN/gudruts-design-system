@@ -1,0 +1,111 @@
+<!doctype html>
+<!--
+  Gudruts: update / broadcast email (behind-the-scenes updates, gut-health notes, launch day).
+  Same look as waitlist-welcome.html. Filled in by api/_lib/broadcast.ts:
+    {{subject}} {{preheader}} {{eyebrow}} {{heading}} {{body}} {{button}}
+    {{asset_base}} {{unsubscribe_url}}
+  {{body}} and {{button}} are already-escaped HTML; everything else is escaped text.
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta name="color-scheme" content="light only" />
+    <meta name="supported-color-schemes" content="light only" />
+    <title>{{subject}}</title>
+    <style>
+      body { margin: 0; padding: 0; background: #f5e8e7; }
+      a { color: #c95778; }
+      @media (max-width: 620px) {
+        .container { width: 100% !important; border-radius: 0 !important; }
+        .pad { padding-left: 22px !important; padding-right: 22px !important; }
+        .headline { font-size: 34px !important; }
+      }
+    </style>
+  </head>
+  <body style="margin:0;padding:0;background:#f5e8e7;">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#f5e8e7;">
+      {{preheader}}
+      &#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5e8e7;">
+      <tr>
+        <td align="center" style="padding:28px 12px;">
+          <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0"
+            style="width:600px;background:#fff9eb;border-radius:28px;overflow:hidden;border:2px solid #3d2a41;">
+
+            <tr>
+              <td align="center" style="padding:26px 0 18px;">
+                <a href="https://gudruts.com" style="text-decoration:none;">
+                  <img src="{{asset_base}}/wordmark.png" width="128" alt="gudruts"
+                    style="display:block;width:128px;height:auto;border:0;" />
+                </a>
+              </td>
+            </tr>
+
+            <!-- Heading panel -->
+            <tr>
+              <td class="pad" style="padding:0 24px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                  style="background:#526631;border-radius:22px;">
+                  <tr>
+                    <td style="padding:28px 28px 30px;">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td valign="middle">
+                            <p style="margin:0 0 10px;font:800 11px/1 Arial,Helvetica,sans-serif;letter-spacing:3px;color:#f1d66f;">
+                              {{eyebrow}}
+                            </p>
+                            <h1 class="headline"
+                              style="margin:0;font:900 38px/1 'Arial Black',Arial,Helvetica,sans-serif;letter-spacing:-1.2px;color:#fff9eb;">
+                              {{heading}}
+                            </h1>
+                          </td>
+                          <td valign="bottom" width="96" style="padding-left:12px;">
+                            <img src="{{asset_base}}/gudu.png" width="96" alt=""
+                              style="display:block;width:96px;height:auto;border:0;" />
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Body -->
+            <tr>
+              <td class="pad" style="padding:30px 44px 8px;font:16px/1.65 Arial,Helvetica,sans-serif;color:#3d2a41;">
+                {{body}}
+              </td>
+            </tr>
+
+            {{button}}
+
+            <tr>
+              <td class="pad" style="padding:18px 44px 34px;font:16px/1.6 Arial,Helvetica,sans-serif;color:#3d2a41;">
+                <p style="margin:0;font:italic 22px/1.3 Georgia,serif;color:#c95778;">Gudu &amp; the Gudruts team</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pad" style="padding:20px 44px 26px;background:#3d2a41;font:12px/1.6 Arial,Helvetica,sans-serif;color:#e7d9e7;">
+                <p style="margin:0 0 8px;">
+                  You’re getting this because you joined the Gudruts launch list at gudruts.com.
+                  Reply any time; it comes straight to us.
+                </p>
+                <p style="margin:0;">
+                  <a href="{{unsubscribe_url}}" style="color:#f1d66f;">Unsubscribe</a>
+                  &nbsp;·&nbsp; <a href="https://gudruts.com/#/privacy" style="color:#e7d9e7;">Privacy</a>
+                  &nbsp;·&nbsp; Gudruts &nbsp;·&nbsp; Made in India
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

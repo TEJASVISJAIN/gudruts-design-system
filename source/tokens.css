@@ -1,0 +1,50 @@
+/*
+ * Gudruts design tokens — the single source for colour, type and radius.
+ * Declared with Tailwind's @theme, so every token is both a CSS variable
+ * (var(--color-pink)) and a utility class (bg-pink, text-ink-muted, rounded-lg, font-display).
+ * `static` makes Tailwind emit every variable, even ones no utility uses yet.
+ * The live style guide is at /#/styleguide.
+ */
+@theme static {
+  /* ---------- Brand palette ---------- */
+  --color-plum: #3d2a41; /* primary ink and dark surfaces */
+  --color-purple: #73507c;
+  --color-dark-purple: #5d3a61;
+  --color-pink: #c95778; /* primary accent */
+  --color-deep-pink: #b93f61; /* emphasis: discounts, savings, errors */
+  --color-orange: #e58d3a;
+  --color-yellow: #f1d66f; /* highlight; CTA colour on dark surfaces */
+  --color-olive: #526631;
+  --color-sage: #dfe5c8;
+
+  /* ---------- Surfaces ---------- */
+  --color-cream: #fff9eb; /* page background */
+  --color-blush: #f5e8e7; /* soft pink panels */
+  --color-peach: #f3e1cd; /* warm panels */
+
+  /* ---------- Text ---------- */
+  --color-ink: #3d2a41; /* = plum */
+  --color-ink-muted: #76577c; /* secondary copy */
+  --color-ink-subtle: #806287; /* captions, meta, helper text */
+  --color-ink-faint: #967f9b; /* struck-through prices, disabled */
+
+  /* ---------- Lines: ink at fixed opacities ---------- */
+  --color-line-soft: rgb(74 33 96 / 0.12); /* dividers inside cards */
+  --color-line: rgb(74 33 96 / 0.2); /* default borders */
+  --color-line-strong: rgb(74 33 96 / 0.35); /* inputs, steppers, outlined buttons */
+  --color-scrim: rgb(74 33 96 / 0.62); /* overlay backdrops */
+
+  /* ---------- Typography ---------- */
+  --font-display: "Bricolage Grotesque", sans-serif; /* headings, prices, labels */
+  --font-body: "DM Sans", sans-serif; /* running text and UI */
+  --font-serif: "Instrument Serif", serif; /* italic accent words in headings */
+  --font-script: "Merienda", cursive; /* the pack wordmark only */
+  --tracking-display: -0.045em; /* hero and page titles — any tighter and letters touch */
+  --tracking-heading: -0.035em; /* section and modal headings */
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 18px; /* thumbnails, small panels */
+  --radius-md: 22px; /* panels, modals, drawers */
+  --radius-lg: 28px; /* product cards, large surfaces */
+  --radius-pill: 999px; /* buttons, chips, inputs */
+}
